@@ -1,21 +1,32 @@
 package com.example.taskmanager.model;
 
 public class Member {
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
-    private Role role;
+    private Role role;  
+    private int teamId;
 
     public Member() {}
 
-    public Member(String firstName, String lastName, String email, Role role) {
+    public Member(String firstName, String lastName, String email, Role role, int teamId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.role = role;
+        this.teamId = teamId;
     }
 
     // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -46,5 +57,13 @@ public class Member {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public int getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 }
