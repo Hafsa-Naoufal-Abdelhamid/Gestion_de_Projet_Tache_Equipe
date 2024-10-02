@@ -122,29 +122,30 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public List<Task> getTasksByProjectId(int projectId) {
+    public List<Task> getTasksByProjectId(int projectId, int page, int pageSize) {
         List<Task> tasks = new ArrayList<>();
-        String query = "SELECT * FROM tasks WHERE project_id = ?";
+        String query = "SELECT * FROM tasks WHERE project_id = ? LIMIT ? OFFSET ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, projectId);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setInt(2, pageSize);
+            statement.setInt(3, (page - 1) * pageSize);
 
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Task task = new Task();
                 task.setId(resultSet.getInt("id"));
                 task.setTitle(resultSet.getString("title"));
-                task.setDescription(resultSet.getString("description"));
+
                 task.setStatus(TaskStatus.valueOf(resultSet.getString("status")));
-                task.setProjectId(resultSet.getInt("project_id"));
+
                 tasks.add(task);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return tasks;
     }
 
