@@ -3,19 +3,22 @@ package com.example.taskmanager.model;
 import java.time.LocalDate;
 
 public class Task {
-    private int id;  // Add an ID field
+    public static final String Priority = null;
+	private int id;
     private String title;
     private String description;
     private Priority priority;
     private TaskStatus status;
     private LocalDate creationDate;
     private LocalDate dueDate;
+    private Long projectId;
+    private Long assignedMemberId;
 
-    // Constructor without the id
+  
     public Task() {}
 
     // Constructor with all fields
-    public Task(int id, String title, String description, Priority priority, TaskStatus status, LocalDate creationDate, LocalDate dueDate) {
+    public Task(int id, String title, String description, Priority priority, TaskStatus status, LocalDate creationDate, LocalDate dueDate, Long projectId, Long assignedMemberId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -23,6 +26,8 @@ public class Task {
         this.status = status;
         this.creationDate = creationDate;
         this.dueDate = dueDate;
+        this.projectId = projectId;
+        this.assignedMemberId = assignedMemberId;
     }
 
     // Getters and Setters for the ID field
@@ -82,4 +87,21 @@ public class Task {
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
+    
+    public Long getProjectId() {
+        return projectId;
+    }
+    
+    public void setProjectId(int i) {
+        this.projectId = i;
+    }
+
+    public Long getAssignedMemberId() {
+        return assignedMemberId;
+    }
+   
+    public void setAssignedMemberId(Long assignedMemberId) {
+        this.assignedMemberId = assignedMemberId;
+    }
+
 }
