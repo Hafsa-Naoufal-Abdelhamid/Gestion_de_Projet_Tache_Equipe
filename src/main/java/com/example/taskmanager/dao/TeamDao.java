@@ -1,6 +1,7 @@
 package com.example.taskmanager.dao;
 
 import com.example.taskmanager.model.Team;
+import com.example.taskmanager.model.Member;
 import java.util.List;
 
 public interface TeamDao {
@@ -9,5 +10,5 @@ public interface TeamDao {
     void deleteTeam(int teamId);
     Team findTeamById(int teamId);
     List<Team> getAllTeams(int page, int pageSize);
-    List<Team> getMembersByTeamId(int teamId);  // To retrieve members associated with a team
+    List<Member> getMembersByTeamId(int teamId);
 }
