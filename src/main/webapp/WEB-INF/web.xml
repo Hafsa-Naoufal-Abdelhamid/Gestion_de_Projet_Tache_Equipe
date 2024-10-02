@@ -9,13 +9,13 @@
 
     <!-- Project Management Servlet -->
     <servlet>
-        <servlet-name>ProjectServlet</servlet-name>
-        <servlet-class>com.example.taskmanager.controller.ProjectServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ProjectServlet</servlet-name>
-        <url-pattern>/projects</url-pattern>
-    </servlet-mapping>
+	    <servlet-name>ProjectControllerServlet</servlet-name>
+	    <servlet-class>com.example.taskmanager.controller.ProjectControllerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>ProjectControllerServlet</servlet-name>
+	    <url-pattern>/projects</url-pattern>
+	</servlet-mapping>
 
     <!-- Task Management Servlet -->
     <servlet>
