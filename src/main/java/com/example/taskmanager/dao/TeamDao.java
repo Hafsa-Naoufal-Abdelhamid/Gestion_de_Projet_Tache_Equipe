@@ -9,4 +9,5 @@ public interface TeamDao {
     void deleteTeam(int teamId);
     Team findTeamById(int teamId);
     List<Team> getAllTeams(int page, int pageSize);
+    List<Team> getMembersByTeamId(int teamId);  // To retrieve members associated with a team
 }
