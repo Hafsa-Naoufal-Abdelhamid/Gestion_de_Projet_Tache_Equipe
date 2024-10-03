@@ -87,13 +87,13 @@ Ce projet vise à développer une application web collaborative de gestion de pr
 - Importez le fichier SQL situé dans le dossier `resources/db/schema.sql` pour créer les tables et insérer les données initiales.
 
    1. Cloner le dépôt :
-   ```bash git clone https://github.com/Hafsa-Naoufal-Abdelhamid/Gestion_de_Projet_Tache_Equipe ```bash
+   ```bash git clone https://github.com/Hafsa-Naoufal-Abdelhamid/Gestion_de_Projet_Tache_Equipe ```
    
    2. Naviguer vers le dossier du projet :
-   ```bash cd votre-projet ```bash
+   ```bash cd votre-projet ```
    
    3. Installer les dépendances avec Maven :
-   ```bash mvn install ```bash
+   ```bash mvn install ```
    
 
 ## Collaborateurs
