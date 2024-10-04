@@ -61,26 +61,35 @@ public class MemberControllerServlet extends HttpServlet {
         int teamId = getIntParameter(request, "teamId", 0);
         int page = getIntParameter(request, "page", 1);
         int pageSize = getIntParameter(request, "pageSize", 10);
-        List<Member> members = memberService.getAllMembersByTeamId(teamId, page, pageSize);
+        
+        List<Member> members;
+        if (teamId > 0) {
+            // If a teamId is provided, get members for that team
+            members = memberService.getAllMembersByTeamId(teamId, page, pageSize);
+        } else {
+            // If no teamId is provided, get all members
+            members = memberService.getAllMembers();
+        }
+        
         request.setAttribute("members", members);
-        request.getRequestDispatcher("/member-list.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/member-list.jsp").forward(request, response);
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/member-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/member-form.jsp").forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int memberId = getIntParameter(request, "id", 0);
         Member member = memberService.findMemberById(memberId);
         request.setAttribute("member", member);
-        request.getRequestDispatcher("/member-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/member-form.jsp").forward(request, response);
     }
 
     private void createMember(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Member member = getMemberFromRequest(request);
         memberService.createMember(member);
-        response.sendRedirect("members?action=list");
+        response.sendRedirect(request.getContextPath() + "/members?action=list");
     }
 
     private void updateMember(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -88,13 +97,13 @@ public class MemberControllerServlet extends HttpServlet {
         Member member = getMemberFromRequest(request);
         member.setId(id);
         memberService.updateMember(member);
-        response.sendRedirect("members?action=list");
+        response.sendRedirect(request.getContextPath() + "/members?action=list");
     }
 
     private void deleteMember(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int memberId = getIntParameter(request, "id", 0);
         memberService.deleteMember(memberId);
-        response.sendRedirect("members?action=list");
+        response.sendRedirect(request.getContextPath() + "/members?action=list");
     }
 
     private Member getMemberFromRequest(HttpServletRequest request) {
@@ -107,7 +116,7 @@ public class MemberControllerServlet extends HttpServlet {
     }
 
     private int getIntParameter(HttpServletRequest request, String name, int defaultValue) {
-        String paramValue = request.getParameter(name);
+        String paramValue = request.getParameter("name");
         if (paramValue == null || paramValue.isEmpty()) {
             return defaultValue;
         }

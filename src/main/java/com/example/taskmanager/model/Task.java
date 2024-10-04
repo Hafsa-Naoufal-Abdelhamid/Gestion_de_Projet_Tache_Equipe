@@ -10,19 +10,21 @@ public class Task {
     private TaskStatus status;
     private LocalDate creationDate;
     private LocalDate dueDate;
+    private int projectId;
+    private int memberId;
 
     // Constructor without the id
     public Task() {}
 
     // Constructor with all fields
-    public Task(int id, String title, String description, Priority priority, TaskStatus status, LocalDate creationDate, LocalDate dueDate) {
-        this.id = id;
+    public Task(String title, String description, Priority priority, TaskStatus status, LocalDate creationDate, LocalDate dueDate, int projectId) {
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.status = status;
         this.creationDate = creationDate;
         this.dueDate = dueDate;
+        this.projectId = projectId;
     }
 
     // Getters and Setters for the ID field
@@ -81,5 +83,13 @@ public class Task {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+    
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) { 
+        this.projectId = projectId;
     }
 }

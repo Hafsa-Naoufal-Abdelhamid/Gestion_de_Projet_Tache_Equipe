@@ -9,6 +9,7 @@ public interface TaskService {
     void updateTask(Task task);
     void deleteTask(int taskId);
     Task findTaskById(int taskId);
+    List<Task> getAllTasks(int page, int pageSize);
     List<Task> getTasksByProjectId(int projectId, int page, int pageSize);
     void assignTaskToMember(int taskId, int memberId);
     void updateTaskStatus(int taskId, String status);

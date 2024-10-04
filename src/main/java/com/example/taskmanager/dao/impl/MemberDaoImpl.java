@@ -95,6 +95,33 @@ public class MemberDaoImpl implements MemberDao {
         }
         return member;
     }
+    
+    @Override
+    public List<Member> getAllMembers() {
+        List<Member> members = new ArrayList<>();
+        String query = "SELECT * FROM members";  // Fetch all members
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Member member = new Member();
+                member.setId(resultSet.getInt("id"));
+                member.setFirstName(resultSet.getString("first_name"));
+                member.setLastName(resultSet.getString("last_name"));
+                member.setEmail(resultSet.getString("email"));
+                member.setRole(Role.valueOf(resultSet.getString("role")));  // Assuming Role is an enum
+                member.setTeamId(resultSet.getInt("team_id"));
+
+                members.add(member);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return members;
+    }
 
     @Override
     public List<Member> getAllMembersByTeamId(int teamId, int page, int pageSize) {

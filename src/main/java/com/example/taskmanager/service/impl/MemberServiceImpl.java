@@ -39,6 +39,10 @@ public class MemberServiceImpl implements MemberService {
     public List<Member> getAllMembersByTeamId(int teamId, int page, int pageSize) {
         return memberDao.getAllMembersByTeamId(teamId, page, pageSize);
     }
+    
+    public List<Member> getAllMembers(){
+    	return memberDao.getAllMembers();
+    }
 
     @Override
     public List<Task> getTasksByMemberId(int memberId) {

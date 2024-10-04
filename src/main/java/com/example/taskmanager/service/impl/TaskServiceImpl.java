@@ -16,38 +16,41 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void createTask(Task task) {
-        // Empty implementation
+        taskDao.createTask(task);
     }
 
     @Override
     public void updateTask(Task task) {
-        // Empty implementation
+        taskDao.updateTask(task);
     }
 
     @Override
     public void deleteTask(int taskId) {
-        // Empty implementation
+        taskDao.deleteTask(taskId);
     }
 
     @Override
     public Task findTaskById(int taskId) {
-        // Empty implementation
-        return null;
+        return taskDao.findTaskById(taskId);
+    }
+    
+    @Override
+    public List<Task> getAllTasks(int page, int pageSize) {
+        return taskDao.getAllTasks(page, pageSize);
     }
 
     @Override
     public List<Task> getTasksByProjectId(int projectId, int page, int pageSize) {
-        // Empty implementation
-        return null;
+        return taskDao.getTasksByProjectId(projectId, page, pageSize);
     }
 
     @Override
     public void assignTaskToMember(int taskId, int memberId) {
-        // Empty implementation
+        taskDao.assignTaskToMember(taskId, memberId);
     }
 
     @Override
     public void updateTaskStatus(int taskId, String status) {
-        // Empty implementation
+        taskDao.updateTaskStatus(taskId, status);
     }
 }
