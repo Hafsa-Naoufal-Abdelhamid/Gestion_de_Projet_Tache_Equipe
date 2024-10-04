@@ -21,7 +21,6 @@ public class TeamDaoImpl implements TeamDao {
             statement.setString(1, team.getName());
             statement.executeUpdate();
 
-            // Retrieve generated ID and set it to the team
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 team.setId(generatedKeys.getInt(1));

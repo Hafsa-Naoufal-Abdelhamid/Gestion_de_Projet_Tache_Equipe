@@ -1,6 +1,7 @@
 package com.example.taskmanager.controller;
 
 import com.example.taskmanager.model.Member;
+import com.example.taskmanager.model.Role;
 import com.example.taskmanager.service.MemberService;
 import com.example.taskmanager.service.impl.MemberServiceImpl;
 import com.example.taskmanager.dao.impl.MemberDaoImpl;
@@ -57,9 +58,9 @@ public class MemberControllerServlet extends HttpServlet {
     }
 
     private void listMembers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int teamId = getIntParameter(request, "teamId", 0);  // Default to 0 (no team)
-        int page = getIntParameter(request, "page", 1);  // Default to page 1
-        int pageSize = getIntParameter(request, "pageSize", 10);  // Default to pageSize 10
+        int teamId = getIntParameter(request, "teamId", 0);
+        int page = getIntParameter(request, "page", 1);
+        int pageSize = getIntParameter(request, "pageSize", 10);
         List<Member> members = memberService.getAllMembersByTeamId(teamId, page, pageSize);
         request.setAttribute("members", members);
         request.getRequestDispatcher("/member-list.jsp").forward(request, response);
@@ -70,7 +71,7 @@ public class MemberControllerServlet extends HttpServlet {
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int memberId = getIntParameter(request, "id");
+        int memberId = getIntParameter(request, "id", 0);
         Member member = memberService.findMemberById(memberId);
         request.setAttribute("member", member);
         request.getRequestDispatcher("/member-form.jsp").forward(request, response);
@@ -83,7 +84,7 @@ public class MemberControllerServlet extends HttpServlet {
     }
 
     private void updateMember(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = getIntParameter(request, "id");
+        int id = getIntParameter(request, "id", 0);
         Member member = getMemberFromRequest(request);
         member.setId(id);
         memberService.updateMember(member);
@@ -91,30 +92,27 @@ public class MemberControllerServlet extends HttpServlet {
     }
 
     private void deleteMember(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int memberId = getIntParameter(request, "id");
+        int memberId = getIntParameter(request, "id", 0);
         memberService.deleteMember(memberId);
         response.sendRedirect("members?action=list");
     }
 
-    // Helper method to retrieve a member from request parameters
     private Member getMemberFromRequest(HttpServletRequest request) {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
-        String role = request.getParameter("role");
-        int teamId = Integer.parseInt(request.getParameter("teamId"));
+        Role role = Role.valueOf(request.getParameter("role"));
+        int teamId = getIntParameter(request, "teamId", 0);
         return new Member(firstName, lastName, email, role, teamId);
     }
 
-    // Helper method to parse integer parameters safely
-    private int getIntParameter(HttpServletRequest request, String name) {
-        return Integer.parseInt(request.getParameter(name));
-    }
-
-    // Helper method with a default value if the parameter doesn't exist or is invalid
     private int getIntParameter(HttpServletRequest request, String name, int defaultValue) {
+        String paramValue = request.getParameter(name);
+        if (paramValue == null || paramValue.isEmpty()) {
+            return defaultValue;
+        }
         try {
-            return Integer.parseInt(request.getParameter(name));
+            return Integer.parseInt(paramValue);
         } catch (NumberFormatException e) {
             return defaultValue;
         }

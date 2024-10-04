@@ -1,7 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"   
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0  
-         http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example.taskmanager</groupId>
     <artifactId>taskmanager</artifactId>
@@ -9,6 +9,11 @@
     <packaging>war</packaging>
     <name>taskmanager Maven Webapp</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
     <dependencies>
         <!-- Servlet API -->
@@ -27,21 +32,28 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSTL --> 
+        <!-- JSTL -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
 
-        <!-- Pilote JDBC pour MySQL -->
+        <!-- MySQL Connector -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
+        
+        <dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>1.2</version>
+		</dependency>
 
-        <!-- JUnit pour les tests unitaires -->
+
+        <!-- JUnit for unit tests -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -49,7 +61,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- SLF4J et Log4j pour le logging -->
+        <!-- SLF4J and Log4j for logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -57,20 +69,15 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>slf4j-reload4j</artifactId>
             <version>1.7.36</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
         </dependency>
     </dependencies>
 
     <build>
         <finalName>taskmanager</finalName>
         <plugins>
-            <!-- Plugin Maven Compiler pour spécifier Java 8 -->
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -81,7 +88,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin Maven pour les ressources web (optionnel) -->
+            <!-- Maven WAR Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>

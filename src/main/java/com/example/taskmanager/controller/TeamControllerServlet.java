@@ -60,22 +60,22 @@ public class TeamControllerServlet extends HttpServlet {
     }
 
     private void listTeams(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int page = getIntParameter(request, "page", 1);  
-        int pageSize = getIntParameter(request, "pageSize", 10);  
+        int page = getIntParameter(request, "page", 1);
+        int pageSize = getIntParameter(request, "pageSize", 10);
         List<Team> teams = teamService.getAllTeams(page, pageSize);
         request.setAttribute("teams", teams);
-        request.getRequestDispatcher("/team-list.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/team-list.jsp").forward(request, response);
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/team-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views//team-form.jsp").forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int teamId = getIntParameter(request, "id");
+        int teamId = getIntParameter(request, "id", 0);
         Team team = teamService.findTeamById(teamId);
         request.setAttribute("team", team);
-        request.getRequestDispatcher("/team-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views//team-form.jsp").forward(request, response);
     }
 
     private void createTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -85,40 +85,40 @@ public class TeamControllerServlet extends HttpServlet {
     }
 
     private void updateTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = getIntParameter(request, "id");
+        int id = getIntParameter(request, "id", 0);
         Team team = getTeamFromRequest(request);
-        team.setId(id);
+        team.setId(id);  // Set the ID on the team to update
         teamService.updateTeam(team);
         response.sendRedirect("teams?action=list");
     }
 
     private void deleteTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int teamId = getIntParameter(request, "id");
+        int teamId = getIntParameter(request, "id", 0);
         teamService.deleteTeam(teamId);
         response.sendRedirect("teams?action=list");
     }
 
     private void viewTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int teamId = getIntParameter(request, "id");
+        int teamId = getIntParameter(request, "id", 0);
         Team team = teamService.findTeamById(teamId);
         request.setAttribute("team", team);
-        request.getRequestDispatcher("/team-view.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/team-view.jsp").forward(request, response);
     }
 
     private Team getTeamFromRequest(HttpServletRequest request) {
         String name = request.getParameter("name");
-        return new Team(name, null);
-    }
-
-    private int getIntParameter(HttpServletRequest request, String name) {
-        return Integer.parseInt(request.getParameter(name));
+        return new Team(name);  // Create a new team with just the name
     }
 
     private int getIntParameter(HttpServletRequest request, String name, int defaultValue) {
-        try {
-            return Integer.parseInt(request.getParameter(name));
-        } catch (NumberFormatException e) {
-            return defaultValue;
+        String paramValue = request.getParameter(name);
+        if (paramValue != null && !paramValue.isEmpty()) {
+            try {
+                return Integer.parseInt(paramValue);
+            } catch (NumberFormatException e) {
+                // Handle the error properly, perhaps logging it
+            }
         }
+        return defaultValue;
     }
 }

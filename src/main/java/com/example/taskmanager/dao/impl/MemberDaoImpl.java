@@ -127,16 +127,15 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<Task> getTasksByMemberId(int memberId) {
-        List<Task> tasks = new ArrayList<>();  // Create a new list to hold tasks
+        List<Task> tasks = new ArrayList<>();
         String query = "SELECT * FROM tasks WHERE assigned_member_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setInt(1, memberId);  // Set the member ID in the query
+            statement.setInt(1, memberId); 
             ResultSet resultSet = statement.executeQuery();
 
-            // Loop through the result set and create Task objects for each row
             while (resultSet.next()) {
                 Task task = new Task();
                 task.setId(resultSet.getInt("id"));
