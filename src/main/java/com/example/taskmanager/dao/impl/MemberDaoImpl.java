@@ -122,6 +122,7 @@ public class MemberDaoImpl implements MemberDao {
         }
         return members;
     }
+    
 
     @Override
     public List<Member> getAllMembersByTeamId(int teamId, int page, int pageSize) {
@@ -179,5 +180,32 @@ public class MemberDaoImpl implements MemberDao {
             e.printStackTrace();  
         }
         return tasks;  
+    }
+    
+    @Override
+    public List<Member> getAllMembersNotInTeam(int teamId) {
+        List<Member> members = new ArrayList<>();
+        String query = "SELECT * FROM members WHERE team_id != ? OR team_id IS NULL";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, teamId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Member member = new Member();
+                member.setId(resultSet.getInt("id"));
+                member.setFirstName(resultSet.getString("first_name"));
+                member.setLastName(resultSet.getString("last_name"));
+                member.setEmail(resultSet.getString("email"));
+                member.setRole(Role.valueOf(resultSet.getString("role")));
+                member.setTeamId(resultSet.getInt("team_id"));
+                members.add(member);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return members;
     }
 }

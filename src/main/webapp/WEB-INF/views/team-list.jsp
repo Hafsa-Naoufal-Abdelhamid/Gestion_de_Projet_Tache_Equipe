@@ -4,47 +4,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Team List</title>
-    <!-- Include Bootstrap CSS -->
+    <title>Team Details</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Team List</h1>
+    <h1 class="mb-4">Team Details</h1>
 
-    <a href="teams?action=new" class="btn btn-primary mb-4">Create New Team</a>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Team Name: ${team.name}</h5>
+            <p class="card-text">Team ID: ${team.id}</p>
+            <h6>Members:</h6>
+            <ul>
+                <c:forEach var="member" items="${team.members}">
+                    <li>${member.firstName} ${member.lastName} - ${member.email}</li>
+                </c:forEach>
+            </ul>
+        </div>
+    </div>
 
-    <table class="table table-bordered">
-        <thead class="thead-light">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Members</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="team" items="${teams}">
-            <tr>
-                <td>${team.id}</td>
-                <td>${team.name}</td>
-                <td>
-                    <c:forEach var="member" items="${team.members}">
-                        ${member.firstName} ${member.lastName} <br/>
-                    </c:forEach>
-                </td>
-                <td>
-                    <a href="teams?action=view&id=${team.id}" class="btn btn-info btn-sm">View</a>
-                    <a href="teams?action=edit&id=${team.id}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="teams?action=delete&id=${team.id}" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    <h2>Add Member to Team</h2>
+    <form action="teams" method="post">
+        <input type="hidden" name="action" value="addMember"/>
+        <input type="hidden" name="teamId" value="${team.id}"/>
+        <div class="form-group">
+            <label for="memberId">Select Member:</label>
+            <select class="form-control" id="memberId" name="memberId" required>
+                <c:forEach var="availableMember" items="${availableMembers}">
+                    <option value="${availableMember.id}">${availableMember.firstName} ${availableMember.lastName}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Member</button>
+    </form>
+
+    <a href="teams?action=list" class="btn btn-secondary mt-3">Back to List</a>
 </div>
 
-<!-- Include Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </body>

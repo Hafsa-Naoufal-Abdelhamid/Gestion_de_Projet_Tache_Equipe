@@ -13,4 +13,5 @@ public interface MemberDao {
     List<Member> getAllMembers(); 
     List<Member> getAllMembersByTeamId(int teamId, int page, int pageSize);
     List<Task> getTasksByMemberId(int memberId);
+    List<Member> getAllMembersNotInTeam(int teamId);
 }

@@ -1,9 +1,13 @@
 package com.example.taskmanager.controller;
 
 import com.example.taskmanager.model.Team;
+import com.example.taskmanager.model.Member;
 import com.example.taskmanager.service.TeamService;
+import com.example.taskmanager.service.MemberService;
 import com.example.taskmanager.service.impl.TeamServiceImpl;
+import com.example.taskmanager.service.impl.MemberServiceImpl;
 import com.example.taskmanager.dao.impl.TeamDaoImpl;
+import com.example.taskmanager.dao.impl.MemberDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,10 +19,12 @@ import java.util.List;
 public class TeamControllerServlet extends HttpServlet {
 
     private TeamService teamService;
+    private MemberService memberService;
 
     @Override
     public void init() throws ServletException {
         teamService = new TeamServiceImpl(new TeamDaoImpl());
+        memberService = new MemberServiceImpl(new MemberDaoImpl());
     }
 
     @Override
@@ -52,10 +58,18 @@ public class TeamControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        if ("create".equals(action)) {
-            createTeam(request, response);
-        } else if ("update".equals(action)) {
-            updateTeam(request, response);
+        switch (action) {
+            case "create":
+                createTeam(request, response);
+                break;
+            case "update":
+                updateTeam(request, response);
+                break;
+            case "addMember":
+                addMemberToTeam(request, response);
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
         }
     }
 
@@ -68,14 +82,14 @@ public class TeamControllerServlet extends HttpServlet {
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views//team-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/team-form.jsp").forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int teamId = getIntParameter(request, "id", 0);
         Team team = teamService.findTeamById(teamId);
         request.setAttribute("team", team);
-        request.getRequestDispatcher("/WEB-INF/views//team-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/team-form.jsp").forward(request, response);
     }
 
     private void createTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -87,7 +101,7 @@ public class TeamControllerServlet extends HttpServlet {
     private void updateTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = getIntParameter(request, "id", 0);
         Team team = getTeamFromRequest(request);
-        team.setId(id);  // Set the ID on the team to update
+        team.setId(id);
         teamService.updateTeam(team);
         response.sendRedirect("teams?action=list");
     }
@@ -102,12 +116,27 @@ public class TeamControllerServlet extends HttpServlet {
         int teamId = getIntParameter(request, "id", 0);
         Team team = teamService.findTeamById(teamId);
         request.setAttribute("team", team);
+        
+        List<Member> availableMembers = memberService.getAllMembersNotInTeam(teamId);
+        request.setAttribute("availableMembers", availableMembers);
+        
         request.getRequestDispatcher("/WEB-INF/views/team-view.jsp").forward(request, response);
+    }
+
+    private void addMemberToTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int teamId = getIntParameter(request, "teamId", 0);
+        int memberId = getIntParameter(request, "memberId", 0);
+        
+        if (teamId > 0 && memberId > 0) {
+            teamService.addMemberToTeam(teamId, memberId);
+        }
+        
+        response.sendRedirect("teams?action=view&id=" + teamId);
     }
 
     private Team getTeamFromRequest(HttpServletRequest request) {
         String name = request.getParameter("name");
-        return new Team(name);  // Create a new team with just the name
+        return new Team(name);
     }
 
     private int getIntParameter(HttpServletRequest request, String name, int defaultValue) {

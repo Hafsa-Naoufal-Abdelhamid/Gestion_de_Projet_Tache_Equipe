@@ -108,6 +108,20 @@ public class TeamDaoImpl implements TeamDao {
         }
         return teams;
     }
+    
+    @Override
+    public void addMemberToTeam(int teamId, int memberId) {
+        String query = "UPDATE members SET team_id = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, teamId);
+            statement.setInt(2, memberId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public List<Member> getMembersByTeamId(int teamId) {

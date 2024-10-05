@@ -77,10 +77,9 @@ public class TaskControllerServlet extends HttpServlet {
 
     private void listTasks(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int projectId = getIntParameter(request, "projectId", 1);
         int page = getIntParameter(request, "page", 1);
         int pageSize = getIntParameter(request, "pageSize", 10);
-        List<Task> tasks = taskService.getTasksByProjectId(projectId, page, pageSize);
+        List<Task> tasks = taskService.getAllTasks(page, pageSize);
         request.setAttribute("tasks", tasks);
         request.getRequestDispatcher("/WEB-INF/views/task-list.jsp").forward(request, response);
     }

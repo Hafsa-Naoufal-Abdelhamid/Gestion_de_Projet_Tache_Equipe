@@ -24,6 +24,11 @@ public class TeamServiceImpl implements TeamService {
     public void updateTeam(Team team) {
         teamDao.updateTeam(team);
     }
+    
+    @Override
+    public void addMemberToTeam(int teamId, int memberId) {
+        teamDao.addMemberToTeam(teamId, memberId);
+    }
 
     @Override
     public void deleteTeam(int teamId) {

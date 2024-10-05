@@ -43,6 +43,11 @@ public class MemberServiceImpl implements MemberService {
     public List<Member> getAllMembers(){
     	return memberDao.getAllMembers();
     }
+    
+    @Override
+    public List<Member> getAllMembersNotInTeam(int teamId) {
+        return memberDao.getAllMembersNotInTeam(teamId);
+    }
 
     @Override
     public List<Task> getTasksByMemberId(int memberId) {

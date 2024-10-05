@@ -11,4 +11,5 @@ public interface TeamDao {
     Team findTeamById(int teamId);
     List<Team> getAllTeams(int page, int pageSize);
     List<Member> getMembersByTeamId(int teamId);
+    void addMemberToTeam(int teamId, int memberId);
 }
